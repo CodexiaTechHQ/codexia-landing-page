@@ -77,10 +77,31 @@
         .animate-fade-in {
             animation: fadeIn 1s ease-out;
         }
+        /* Flash Mesajları için stil */
+        .flash-alert-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            max-width: 350px;
+        }
     </style>
 </head>
 <body>
     
+    <div class="flash-alert-fixed">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand logo-text" href="#">Codexia</a>
@@ -102,7 +123,7 @@
                         <a class="nav-link" href="#iletisim">İletişim</a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn cta-button btn-sm" href="mailto:selim.cinar@codexia.com">Teklif Al</a>
+                        <a class="btn btn-outline-light btn-sm" href="{{ url_for('admin_login') }}">Admin</a>
                     </li>
                 </ul>
             </div>
@@ -267,8 +288,7 @@
                                 <button type="submit" class="btn cta-button btn-lg px-5 mt-3">Teklif Talep Et</button>
                             </div>
                         </form>
-                        <p id="form-status" class="mt-3 text-center text-sm text-muted"></p>
-                    </div>
+                        </div>
                 </div>
             </div>
             
@@ -293,30 +313,5 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Geri sayım kaldırıldığı için ilgili JS kodu da kaldırıldı.
-        
-        // Form Gönderme İşlevi (Simülasyon)
-        document.getElementById('contactForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const formStatus = document.getElementById('form-status');
-            const submitButton = event.target.querySelector('button[type="submit"]');
-
-            formStatus.textContent = "Gönderiliyor...";
-            formStatus.classList.add('text-primary');
-            submitButton.disabled = true;
-
-            // Simüle edilmiş sunucu isteği (Siz buraya Flask endpoint'inize gerçek Fetch API kodunu yazmalısınız)
-            setTimeout(() => {
-                // Başarılı Simülasyon
-                formStatus.textContent = "Mesajınız başarıyla iletildi. En kısa sürede size dönüş yapacağız!";
-                formStatus.classList.remove('text-primary');
-                formStatus.classList.add('text-success');
-                event.target.reset(); // Formu temizle
-                submitButton.disabled = false;
-                
-            }, 2000);
-        });
-    </script>
-</body>
+    </body>
 </html>
