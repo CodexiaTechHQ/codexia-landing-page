@@ -12,6 +12,7 @@ ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'codexia_master') 
 
 # SQLite veritabanı dosyasının konumu: Uygulama kök dizininde site.db
+# Not: Canlı ortamda SQLite yerine PostgreSQL kullanmak daha güvenli ve ölçeklenebilirdir.
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -24,13 +25,15 @@ class ContactRequest(db.Model):
     email = db.Column(db.String(120), nullable=False)
     service = db.Column(db.String(100), nullable=False)
     message = db.Column(db.Text, nullable=False)
-    # Varsayılan değer olarak UTC zamanı kullanıldı
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
         return f"ContactRequest('{self.name}', '{self.email}')"
 
-# db.create_all() komutu, sadece yerel çalıştırmada çağrılmak üzere kaldırıldı.
+# 🔥 DÜZELTME: db.create_all() Gunicorn tarafından da çalıştırılması için buraya taşındı.
+# Bu kod, uygulama nesnesi oluşturulduktan hemen sonra çalışır ve tabloları oluşturur.
+with app.app_context():
+    db.create_all()
 
 # --- ROTLAR ---
 
@@ -98,7 +101,5 @@ def admin_logout():
     return redirect(url_for('admin_login'))
 
 if __name__ == '__main__':
-    # Veritabanı tablolarını sadece ana Python dosyasından çalıştırıldığında oluştur
-    with app.app_context():
-        db.create_all()
+    # Yerel çalıştırma (debug modu)
     app.run(debug=True)
