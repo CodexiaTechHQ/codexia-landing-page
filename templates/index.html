@@ -1,143 +1,322 @@
 <!DOCTYPE html>
 <html lang="tr">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Codexia: Güvenli ve Akıllı Çözümlerin Merkezi</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
+    <title>Codexia | Dijital Dönüşüm ve Akıllı Çözümler</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    
     <style>
-      /* Codexia Teması: Koyu Arkaplan, Turkuaz Vurgu */
-      body {
-        background-color: #0d1a26; /* Koyu Mavi/Lacivert */
-        color: #f8f9fa; /* Açık Beyaz */
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-      }
-      .container {
-        max-width: 700px;
-      }
-      .logo-text {
-        color: #4dd0e1; /* Turkuaz Vurgu */
-        font-weight: 700;
-        font-size: 2.5rem;
-      }
-      .countdown span {
-        display: inline-block;
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #ff9800; /* Turuncu Vurgu */
-        margin: 0 10px;
-      }
-      .cta-button {
-        background-color: #4dd0e1;
-        border: none;
-        color: #0d1a26;
-        font-weight: bold;
-        margin-top: 20px;
-      }
+        :root {
+            --codexia-dark: #0d1a26; /* Koyu Lacivert */
+            --codexia-primary: #4dd0e1; /* Turkuaz Vurgu */
+            --codexia-accent: #ff9800; /* Turuncu Aksan */
+        }
+        body {
+            background-color: var(--codexia-dark);
+            color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* Navbar */
+        .navbar {
+            background-color: rgba(13, 26, 38, 0.9); /* Yarı saydam koyu */
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .logo-text {
+            color: var(--codexia-primary);
+            font-weight: 800;
+        }
+        .nav-link {
+            color: #ccc !important;
+        }
+        .nav-link:hover {
+            color: var(--codexia-primary) !important;
+        }
+        /* Hero Section */
+        .hero-section {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: linear-gradient(135deg, rgba(13, 26, 38, 0.98), rgba(0, 0, 0, 0.7)), url('https://placehold.co/1920x1080/0d1a26/4dd0e1/gif?text=CODEXIA+BACKGROUND');
+            background-size: cover;
+            background-position: center;
+        }
+        .cta-button {
+            background-color: var(--codexia-primary);
+            border: none;
+            color: var(--codexia-dark);
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #79e9f8;
+            transform: scale(1.05);
+        }
+        /* Hizmet Kartları */
+        .service-card, .solution-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background-color: #1a2c3a; 
+            min-height: 250px;
+        }
+        .service-card:hover, .solution-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(77, 208, 225, 0.3);
+            border-color: var(--codexia-primary);
+        }
+        /* Animasyon */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out;
+        }
     </style>
-  </head>
-  <body>
-    <div class="container py-5">
-      <h1 class="logo-text mb-4">Codexia</h1>
-      <h2 class="display-5 fw-bold text-white">Sitemiz Yakında Yayında!</h2>
-      <p class="lead mb-4">
-        Dijital varlıklarınızın Siber Güvenlik Mimarisi ve Yapay Zeka (AI)
-        Entegrasyonu ile güçlendirildiği çözümler kuruluyor.
-      </p>
-      <div class="countdown my-5">
-        <p class="text-white-50 fs-6 mb-1">LANSMANA KALAN SÜRE:</p>
-        <div id="countdown-timer">
-          <span id="days">00</span>g <span id="hours">00</span>s
-          <span id="minutes">00</span>d <span id="seconds">00</span>s
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand logo-text" href="#">Codexia</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#hizmetler">Hizmetler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#teknolojiler">Uzmanlık</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gelecek">Yol Haritası</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#iletisim">İletişim</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn cta-button btn-sm" href="mailto:selim.cinar@codexia.com">Teklif Al</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
+    </nav>
 
-      <p class="mt-4">
-        Gelişmelerden anında haberdar olmak veya projeleriniz için şimdi
-        iletişime geçmek ister misiniz?
-      </p>
-      <a href="mailto:selim.cinar@codexia.com" class="btn cta-button btn-lg"
-        >Şimdi İletişime Geçin</a
-      >
-
-      <div class="mt-5">
-        <p class="text-white-50">Profesyonel Kanallarımız:</p>
-        <a
-          href="https://github.com/CodexiaTechHQ"
-          target="_blank"
-          class="text-white mx-3"
-          aria-label="Codexia GitHub Organizasyonu"
-          ><i class="fab fa-github fa-2x"></i
-        ></a>
-        <a
-          href="https://www.linkedin.com/company/109681193"
-          target="_blank"
-          class="text-white mx-3"
-          aria-label="Codexia LinkedIn Şirket Sayfası"
-          ><i class="fab fa-linkedin fa-2x"></i
-        ></a>
-        <a
-          href="https://www.youtube.com/@CodexiaTech"
-          target="_blank"
-          class="text-white mx-3"
-          aria-label="Codexia YouTube Kanalı"
-          ><i class="fab fa-youtube fa-2x"></i
-        ></a>
-      </div>
+    <div class="hero-section">
+        <div class="container py-5 animate-fade-in">
+            <h2 class="display-3 fw-bold text-white mb-4">İş Akışlarınızı Kodluyoruz.</h2>
+            <p class="lead mb-5 text-white-75">
+                PyQt ile masaüstü, Flask ile web ve özel tasarımlarla mobil çözümlerinizde, güvenilirliğe ve performansa odaklanıyoruz.
+            </p>
+            <a href="#hizmetler" class="btn btn-outline-light btn-lg me-3">Hizmetlerimizi Keşfet</a>
+            <a href="#iletisim" class="btn cta-button btn-lg">Projenizi Başlatalım</a>
+        </div>
     </div>
+
+    <section id="hizmetler" class="py-5 py-md-5 bg-dark text-center">
+        <div class="container animate-fade-in">
+            <h3 class="display-6 fw-bold mb-4 text-white">Temel Çözüm Alanlarımız</h3>
+            <p class="mb-5 text-white-50">Kurumsal gereksinimlerinizden e-ticaret altyapınıza kadar, her aşamada yanınızdayız.</p>
+            <div class="row g-4">
+                
+                <div class="col-md-4">
+                    <div class="card p-4 service-card h-100">
+                        <i class="fas fa-building fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title fw-bold">Kurumsal & KOBİ Destek</h5>
+                        <p class="card-text text-white-50">Özel KOBİ destek ve yönetim sistemleri, iç iletişim portalları ve dijital dönüşüm çözümleri.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card p-4 service-card h-100">
+                        <i class="fas fa-shopping-cart fa-3x mb-3 text-accent"></i>
+                        <h5 class="card-title fw-bold">E-Ticaret Altyapıları</h5>
+                        <p class="card-text text-white-50">Hızlı, güvenli ve ölçeklenebilir e-ticaret siteleri, API entegrasyonları ve pazar yeri çözümleri.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card p-4 service-card h-100">
+                        <i class="fas fa-mobile-alt fa-3x mb-3 text-info"></i>
+                        <h5 class="card-title fw-bold">Mobil Uygulama Tasarımı</h5>
+                        <p class="card-text text-white-50">Kullanıcı deneyimini (UX) merkeze alan, etkileyici ve akıcı mobil arayüz tasarımları.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="teknolojiler" class="py-5 py-md-5 bg-white text-dark">
+        <div class="container animate-fade-in">
+            <h3 class="display-6 fw-bold mb-5 text-center text-dark">Platform Uzmanlığımız</h3>
+            
+            <div class="row align-items-center mb-5 pb-5 border-bottom">
+                <div class="col-md-6 order-md-1">
+                    <i class="fas fa-desktop fa-4x mb-3 text-secondary"></i>
+                    <h4 class="fw-bold mb-3">Python & PyQt ile Masaüstü Çözümleri</h4>
+                    <p class="text-muted">
+                        Yüksek performans ve güvenilirlik gerektiren kurum içi uygulamalar için **Python PyQt** kullanıyoruz. **Library Desk** benzeri kompleks veri yönetimi ve otomasyon projelerinde uzmanız. Uygulamalarınızın tüm kontrolünü elinizde tutun.
+                    </p>
+                    <span class="badge bg-secondary me-2">PyQt</span>
+                    <span class="badge bg-secondary me-2">Python</span>
+                    <span class="badge bg-secondary">Veri Yönetimi</span>
+                </div>
+                <div class="col-md-6 order-md-0 mt-4 mt-md-0">
+                    <img src="https://placehold.co/600x400/ccc/0d1a26?text=PyQt+Uygulama+Ekran+Görünümü" class="img-fluid rounded shadow-lg" alt="PyQt Masaüstü Uygulaması">
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-md-6 order-md-0">
+                    <img src="https://placehold.co/600x400/4dd0e1/0d1a26?text=Flask+Web+Arayüzü" class="img-fluid rounded shadow-lg" alt="Flask Web Uygulaması">
+                </div>
+                <div class="col-md-6 order-md-1 mt-4 mt-md-0">
+                    <i class="fas fa-globe fa-4x mb-3 text-primary"></i>
+                    <h4 class="fw-bold mb-3">Flask ile Ölçeklenebilir Web Çözümleri</h4>
+                    <p class="text-muted">
+                        Hafif, hızlı ve güvenli web uygulamaları, API servisleri ve kurumsal paneller oluşturmak için **Python Flask** çatısını tercih ediyoruz. Hızlı dağıtım (deployment) ve kolay bakım avantajlarından yararlanın.
+                    </p>
+                    <span class="badge bg-primary me-2">Flask</span>
+                    <span class="badge bg-primary me-2">API Geliştirme</span>
+                    <span class="badge bg-primary">Hızlı Dağıtım</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="gelecek" class="py-5 py-md-5 bg-dark">
+        <div class="container animate-fade-in">
+            <h3 class="display-6 fw-bold mb-4 text-center text-white">Yakın Gelecekteki Uzmanlık Alanlarımız</h3>
+            <p class="text-center text-white-50 mb-5">
+                Mevcut hizmetlerimize ek olarak, önümüzdeki 7 ay içinde portföyümüze katacağımız en son teknolojiler.
+            </p>
+            <div class="row g-4">
+                
+                <div class="col-md-4">
+                    <div class="card p-4 solution-card h-100 text-center">
+                        <i class="fas fa-lock fa-3x mb-3 text-danger"></i>
+                        <h5 class="card-title fw-bold text-white">İleri Düzey Siber Güvenlik</h5>
+                        <p class="card-text text-white-50">
+                            Proaktif zafiyet taraması, sızma testleri ve tam zamanlı dijital varlık koruma mimarisi.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card p-4 solution-card h-100 text-center">
+                        <i class="fas fa-robot fa-3x mb-3 text-warning"></i>
+                        <h5 class="card-title fw-bold text-white">Yapay Zeka (AI) ve Otomasyon</h5>
+                        <p class="card-text text-white-50">
+                            Makine öğrenimi, derin öğrenme ve iş süreçleri için akıllı otomasyon entegrasyonları.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card p-4 solution-card h-100 text-center">
+                        <i class="fas fa-gamepad fa-3x mb-3 text-success"></i>
+                        <h5 class="card-title fw-bold text-white">Profesyonel Oyun Geliştirme</h5>
+                        <p class="card-text text-white-50">
+                            Mobil ve PC platformları için konseptten yayına kadar yaratıcı ve teknik oyun geliştirme.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="iletisim" class="py-5 py-md-5 bg-light text-dark">
+        <div class="container animate-fade-in">
+            <h3 class="display-6 fw-bold mb-4 text-center">Projenizi Konuşalım</h3>
+            <p class="text-center text-muted mb-5">İhtiyaçlarınızı bize iletin, size özel çözüm önerimizle en kısa sürede dönüş yapalım.</p>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="p-4 rounded shadow bg-white">
+                        <form id="contactForm" class="row g-3" method="POST" action="/api/contact">
+                            
+                            <input type="hidden" name="actionType" value="contact_request_main_site">
+                            
+                            <div class="col-md-6">
+                                <input type="text" id="name" name="name" placeholder="Adınız Soyadınız / Firma Adı" class="form-control p-3" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" id="email" name="email" placeholder="E-posta Adresiniz" class="form-control p-3" required>
+                            </div>
+                            <div class="col-12">
+                                <select id="service" name="service" class="form-select p-3" required>
+                                    <option value="">İlgilendiğiniz Hizmet Alanı</option>
+                                    <option value="desktop">Masaüstü Uygulama (PyQt)</option>
+                                    <option value="web">Web Çözümleri (Flask)</option>
+                                    <option value="mobile">Mobil Tasarım</option>
+                                    <option value="future">Gelecek Çözümler (AI/Güvenlik/Oyun)</option>
+                                    <option value="general">Genel Soru</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <textarea id="message" name="message" rows="4" placeholder="Projenizi kısaca anlatın..." class="form-control p-3" required></textarea>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn cta-button btn-lg px-5 mt-3">Teklif Talep Et</button>
+                            </div>
+                        </form>
+                        <p id="form-status" class="mt-3 text-center text-sm text-muted"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-5 pt-3 text-center">
+                 <h4 class="fw-bold mb-3">Doğrudan İletişim</h4>
+                 <p class="mb-1"><i class="fas fa-envelope text-primary me-2"></i> selim.cinar@codexia.com</p>
+                 <p><i class="fas fa-phone text-primary me-2"></i> +90 (555) 555 55 55 (Örnek)</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="text-center py-4 bg-black">
+        <div class="container">
+            <div class="d-flex justify-content-center gap-4 mb-3">
+                <a href="https://github.com/CodexiaTechHQ" target="_blank" class="text-white mx-3 fs-3"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/company/109681193" target="_blank" class="text-white mx-3 fs-3"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.youtube.com/@CodexiaTech" target="_blank" class="text-white mx-3 fs-3"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="text-white-50 mb-0"><small>&copy; 2025 Codexia. Tüm hakları saklıdır.</small></p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      const launchDate = new Date("November 21, 2025 10:00:00").getTime();
+        // Geri sayım kaldırıldığı için ilgili JS kodu da kaldırıldı.
+        
+        // Form Gönderme İşlevi (Simülasyon)
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formStatus = document.getElementById('form-status');
+            const submitButton = event.target.querySelector('button[type="submit"]');
 
-      const x = setInterval(function () {
-        const now = new Date().getTime();
-        const distance = launchDate - now;
+            formStatus.textContent = "Gönderiliyor...";
+            formStatus.classList.add('text-primary');
+            submitButton.disabled = true;
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // HTML'e yazma
-        document.getElementById("days").innerHTML = String(days).padStart(
-          2,
-          "0"
-        );
-        document.getElementById("hours").innerHTML = String(hours).padStart(
-          2,
-          "0"
-        );
-        document.getElementById("minutes").innerHTML = String(minutes).padStart(
-          2,
-          "0"
-        );
-        document.getElementById("seconds").innerHTML = String(seconds).padStart(
-          2,
-          "0"
-        );
-
-        // Sayaç bittiğinde
-        if (distance < 0) {
-          clearInterval(x);
-          document.getElementById("countdown-timer").innerHTML =
-            "SİTE YAYINDA!";
-        }
-      }, 1000);
+            // Simüle edilmiş sunucu isteği (Siz buraya Flask endpoint'inize gerçek Fetch API kodunu yazmalısınız)
+            setTimeout(() => {
+                // Başarılı Simülasyon
+                formStatus.textContent = "Mesajınız başarıyla iletildi. En kısa sürede size dönüş yapacağız!";
+                formStatus.classList.remove('text-primary');
+                formStatus.classList.add('text-success');
+                event.target.reset(); // Formu temizle
+                submitButton.disabled = false;
+                
+            }, 2000);
+        });
     </script>
-  </body>
+</body>
 </html>
