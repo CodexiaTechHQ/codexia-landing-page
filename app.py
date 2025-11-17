@@ -1,43 +1,36 @@
-from flask import Flask, render_template
-
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-    # templates/index.html dosyasını çağırır
-    return render_template('index.html')
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+import os # Ortam değişkenlerini okumak için eklendi
 
 app = Flask(__name__)
-# Gizli anahtar: Güvenlik, oturumlar ve flash mesajları için zorunludur.
-app.secret_key = 'cok_gizli_ve_uzun_bir_sifre_buraya_gelecek_12345' 
 
-# Örnek ve basit kullanıcı doğrulama verileri (Gerçek uygulamada veritabanından okunur)
-ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD = 'codexia_master'
+# --- GÜVENLİK AYARLARI VE ORTAM DEĞİŞKENLERİ ---
+# Güvenlik, oturumlar ve flash mesajları için zorunludur.
+# 'SECRET_KEY' ortam değişkeninden oku, yoksa yedek değer kullan.
+app.secret_key = os.environ.get('SECRET_KEY', 'cok_gizli_ve_uzun_bir_sifre_buraya_gelecek_12345') 
+
+# Admin kimlik bilgileri ortam değişkenlerinden okunur.
+# os.environ.get() ile bu değerler doğrudan Python dosyasında sabit kodlanmaktan kurtulur.
+ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin') # Yedek değer 'admin'
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'codexia_master') # Yedek değer 'codexia_master'
+
+# --- ROTLAR ---
 
 @app.route('/')
 def index():
     # Ana sayfa
     return render_template('index.html')
 
-# --- İLETİŞİM FORMU ROTASI (Index'teki "Teklif Talep Et" butonu buraya POST yapacak) ---
+# --- İLETİŞİM FORMU ROTASI ---
 @app.route('/api/contact', methods=['POST'])
 def handle_contact_form():
-    # Normalde burada form verileri veritabanına kaydedilir veya e-posta gönderilir.
-    
-    # Kullanıcıdan gelen form verilerini al
     name = request.form.get('name')
     email = request.form.get('email')
     service = request.form.get('service')
-    message = request.form.get('message')
+    # message değişkeni alınırken hata yok, sadece düzenlenmiş kısmı dahil ettim.
     
-    # (Sadece Örnek) Veriyi kaydettikten sonra, adminin görmesi için ona bir mesaj gösterelim.
     flash(f'Yeni Teklif Talebi alındı! İlgili Alan: {service}. Gönderen: {name}', 'success')
     
-    # Form gönderimi başarılı olduktan sonra kullanıcıyı ana sayfaya geri yönlendir.
     return redirect(url_for('index'))
-
 
 # --- ADMIN GİRİŞ ROTASI ---
 @app.route('/admin', methods=['GET', 'POST'])
@@ -47,23 +40,20 @@ def admin_login():
         password = request.form.get('password')
 
         if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
-            # Başarılı giriş: Oturum başlatılır.
             session['logged_in'] = True
             flash('Giriş başarılı!', 'success')
             return redirect(url_for('admin_dashboard'))
         else:
             flash('Hatalı kullanıcı adı veya şifre.', 'error')
             
-    # Giriş yapılmışsa, direkt dashboard'a yönlendir.
     if session.get('logged_in'):
-         return redirect(url_for('admin_dashboard'))
+        return redirect(url_for('admin_dashboard'))
             
     return render_template('admin_login.html')
 
 # --- ADMIN DASHBOARD ROTASI ---
 @app.route('/admin/dashboard')
 def admin_dashboard():
-    # Eğer kullanıcı giriş yapmamışsa, giriş sayfasına yönlendir.
     if not session.get('logged_in'):
         flash('Bu sayfaya erişmek için giriş yapmalısınız.', 'error')
         return redirect(url_for('admin_login'))
@@ -78,10 +68,5 @@ def admin_logout():
     return redirect(url_for('admin_login'))
 
 if __name__ == '__main__':
-    # Render'da çalışırken bu kısım devreye girmez, gunicorn kullanılır.
-    # debug=True, geliştirme aşamasında faydalıdır.
-    app.run(debug=True)
-if __name__ == '__main__':
-    # Basit bir sunucu ile uygulamayı başlatır (Render'da bu otomatik yapılır)
-
+    # Yerel çalıştırmada debug modunu kullanır
     app.run(debug=True)
